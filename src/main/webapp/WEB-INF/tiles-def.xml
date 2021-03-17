@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<!-- 타일즈정의 -->
+	<definition name=".home" template="/WEB-INF/views/home/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/header.jsp"/>
+		<put-attribute name="content" value="/WEB-INF/views/home.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/footer.jsp"/>
+	</definition>
+	<definition name=".feed" template="/WEB-INF/views/feed/layout2.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/header.jsp"/>
+		<put-attribute name="side" value="/WEB-INF/views/side.jsp"/>
+		<put-attribute name="content" value="/WEB-INF/views/feed/main.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/footer.jsp"/>
+	</definition>
+	
+	
+	
+	<definition name=".home.*.*.*" template="/WEB-INF/views/home/layout.jsp" extends=".home">
+		<put-attribute name="content" value="/WEB-INF/views/home/{1}/{2}/{3}.jsp"/>
+	</definition>
+	
+	<definition name=".home.*.*" template="/WEB-INF/views/home/layout.jsp" extends=".home">
+		<put-attribute name="content" value="/WEB-INF/views/home/{1}/{2}.jsp"/>
+	</definition>
+	
+	<definition name=".home.*" template="/WEB-INF/views/home/layout.jsp" extends=".home">
+		<put-attribute name="content" value="/WEB-INF/views/home/{1}.jsp"/>
+	</definition>
+	<definition name=".feed.*.*.*" template="/WEB-INF/views/feed/layout2.jsp" extends=".feed">
+		<put-attribute name="side" value="/WEB-INF/views/feed/{1}/{2}.jsp"/>
+		<put-attribute name="content" value="/WEB-INF/views/feed/{1}/{3}.jsp"/>
+	</definition>
+	
+	<definition name=".feed.*.*" template="/WEB-INF/views/feed/layout2.jsp" extends=".feed">
+	
+		<put-attribute name="content" value="/WEB-INF/views/feed/{1}/{2}.jsp"/>
+	</definition>
+	
+	<definition name=".feed.*" template="/WEB-INF/views/feed/layout2.jsp" extends=".feed">
+		<put-attribute name="content" value="/WEB-INF/views/feed/{1}.jsp"/>
+	</definition>
+
+	<definition name=".board.*" template="/WEB-INF/views/home/board/layout-side.jsp" extends=".feed">
+		<put-attribute name="content" value="/WEB-INF/views/home/board/{1}.jsp"/>
+		<put-attribute name="side" value="/WEB-INF/views/home/board/side.jsp"/>
+	</definition>
+</tiles-definitions>

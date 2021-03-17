@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.bonfire.mapper.MProfileMapper">
+	<insert id="insert" parameterType="mprofile">
+		insert into mprofile values(#{id},null,null,0,0,null,null)
+	</insert>
+	<select id="select" parameterType="string" resultType="mprofile">
+		select * from mprofile where id=#{id}
+	</select>
+	<update id="updateProfile" parameterType="mprofile">
+		update mprofile 
+		set nickname=#{nickname},
+			intro=#{intro},
+			bfilename=#{bfilename},
+			pfilename=#{pfilename} 
+		where id=#{id}
+	</update>
+</mapper>

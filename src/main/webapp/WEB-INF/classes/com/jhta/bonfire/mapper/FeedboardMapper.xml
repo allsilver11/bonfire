@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.bonfire.mapper.FeedboardMapper">
+
+<!-- 메인페이지 - 모든 작가 공개글 목록 -->
+	<sql id="search1">
+		<if test="field=='title' or field=='content'or field=='id'">
+  			and ${field} like '%'||#{keyword}||'%'
+  		</if>
+		<if test="field=='toc'">
+  			and (title like '%'||#{keyword}||'%' or content like '%'||#{keyword}||'%')
+  		</if>
+	</sql>
+	
+	<select id="count" resultType="int" parameterType="hashmap">
+		select NVL(count(*),0) cnt from feedboard
+		where ispost=1
+		<include refid="search1"/>
+	</select>
+	
+	<select id="selectAll" resultType="feedboard" parameterType="hashmap">
+		select * from
+		(
+ 			select a.*,rownum rnum from 
+ 			(
+  				select * from feedboard
+  				where ispost=1
+  				<include refid="search1"/>
+  				order by num desc
+  			) a
+  		)
+		<![CDATA[ where rnum>=#{startRow} and rnum<=#{endRow}  ]]>
+	</select>
+	
+<!-- 메인페이지 - 지역별 글목록-->
+	<sql id="search4">
+		<if test="field=='title' or field=='content'or field=='id'">
+  			and ${field} like '%'||#{keyword}||'%'
+  		</if>
+		<if test="field=='toc'">
+  			and (title like '%'||#{keyword}||'%' or content like '%'||#{keyword}||'%')
+  		</if>
+	</sql>
+	
+	<select id="count2" resultType="int" parameterType="hashmap">
+		select NVL(count(*),0) cnt from feedboard
+		where ispost=1 and cname=#{cname}
+		<include refid="search4"/>
+	</select>
+	<select id="selectByRegion" resultType="feedboard" parameterType="hashmap">
+		select * from
+		(
+ 			select a.*,rownum rnum from 
+ 			(
+  				select * from feedboard
+  				where ispost=1 and cname=#{cname}
+  				<include refid="search4"/>
+  				order by num desc
+  			) a
+  		)
+		<![CDATA[ where rnum>=#{startRow} and rnum<=#{endRow}  ]]>
+	</select>
+
+<!-- 본인피드 - 공/비공 여행게시글 목록 -->
+	<sql id="search2">
+		<if test="field=='title' or field=='content' or field=='cname'">
+  			and ${field} like '%'||#{keyword}||'%'
+  		</if>
+		<if test="field=='toc'">
+  			and (title like '%'||#{keyword}||'%' or content like '%'||#{keyword}||'%')
+  		</if>
+	</sql>
+	
+	<select id="countbyId" resultType="int" parameterType="hashmap">
+		select NVL(count(*),0) cnt from feedboard
+		where id=#{id}
+		<include refid="search2"/>
+	</select>
+	
+	<select id="selectAllbyId" resultType="feedboard" parameterType="hashmap">
+		select * from
+		(
+ 			select a.*,rownum rnum from 
+ 			(
+  				select * from feedboard
+  				where id=#{id}
+  				<include refid="search2"/>
+  				order by num desc
+  			) a
+  		)
+		<![CDATA[ where rnum>=#{startRow} and rnum<=#{endRow}  ]]>
+	</select>
+
+<!-- 작가피드 - 공개 여행게시글 목록 -->
+	<sql id="search3">
+		<if test="field=='title' or field=='content' or field=='cname'">
+  			and ${field} like '%'||#{keyword}||'%'
+  		</if>
+		<if test="field=='toc'">
+  			and (title like '%'||#{keyword}||'%' or content like '%'||#{keyword}||'%')
+  		</if>
+	</sql>
+	
+	<select id="countbyId2" resultType="int" parameterType="hashmap">
+		select NVL(count(*),0) cnt from feedboard
+		where id=#{id} and ispost=1
+		<include refid="search3"/>
+	</select>
+	
+	<select id="selectAllbyId2" resultType="feedboard" parameterType="hashmap">
+		select * from
+		(
+ 			select a.*,rownum rnum from 
+ 			(
+  				select * from feedboard
+  				where id=#{id} and ispost=1
+  				<include refid="search3"/>
+  				order by num desc
+  			) a
+  		)
+		<![CDATA[ where rnum>=#{startRow} and rnum<=#{endRow}  ]]>
+	</select>
+	
+<!-- 작성 - 본인만 보는 글등록(일반 회원, 작가) -->
+	<insert id="addPosting" parameterType="feedboard">
+		insert into feedboard values (feedboard_seq.nextval,#{id},#{title},#{content},0,0,
+		0,-1,null,sysdate,#{cname},#{thumbnail})
+	</insert>
+
+<!-- 발행 - 1. 글작성시 발행 (작가)-->
+	<insert id="postPosting" parameterType="feedboard">
+		insert into feedboard values (feedboard_seq.nextval,#{id},#{title},#{content},0,0,
+		0,1,sysdate,sysdate,#{cname},#{thumbnail})
+	</insert>
+	
+<!-- 발행 - 2. 이미 등록된 글 발행 (작가)-->
+	<update id="updatePostingStatus">
+		update feedboard set postdate=sysdate,ispost=1 where num=#{num}
+	</update>
+		
+<!-- 글 상세페이지-->
+	<select id="selectOne" resultType="feedboard">
+		select * from feedboard where num=#{num}
+	</select>
+	
+<!-- 글 수정 1.비공>비공  / 공>공-->
+	<update id="modifyA" parameterType="feedboard">
+		update feedboard set title=#{title},content=#{content},cname=#{cname} where num=#{num}
+	</update>
+	
+<!-- 글 수정2.비공>공 -->
+	<update id="modifyB" parameterType="feedboard">
+		update feedboard set title=#{title},content=#{content},ispost=#{ispost},postdate=sysdate,cname=#{cname} where num=#{num}
+	</update>
+	
+	
+<!-- 댓글 -->	
+	<resultMap type="fbcomment" id="commList">
+		<result property="idx" column="idx"/>
+		<result property="num" column="num"/>
+		<result property="id" column="id"/>
+		<result property="content" column="content"/>
+		<result property="adddate" column="adddate"/>
+	</resultMap>
+	
+	<select id="showComm" resultMap="commList">
+		select * from fbcomment where num=#{num} order by idx asc
+	</select>
+	<insert id="insertComm" parameterType="fbcomment">
+		insert into fbcomment values(fbcomment_seq.nextval,#{num},#{id},#{content},sysdate)
+	</insert>
+	<delete id="deleteComm" parameterType="int">
+		delete from fbcomment where idx=#{idx}
+	</delete>
+	<update id="updateComm" parameterType="hashmap">
+		update fbcomment set content=#{content} where idx=#{idx}
+	</update>
+
+<!-- 조회수 -->
+	<select id="selectHits" parameterType="hashmap" resultType="hashmap">
+		select * from fbhits where num=#{num} and id=#{id}
+	</select>
+	<insert id="insertHits" parameterType="hashmap">
+		insert into fbhits values(#{num},#{id})
+	</insert>
+	<update id="updateHits">
+		update feedboard set hits = hits + 1 where num=#{num}
+	</update>
+
+<!-- 추천 -->
+	<insert id="insertRecomm">
+		insert into recomm values(#{num},#{id},#{value},sysdate)
+	</insert>
+	<update id="updateRecomm">
+		update feedboard set recommend = recommend + 1 where num=#{num}
+	</update>
+	<update id="cancelRecomm">
+		update feedboard set recommend= recommend -1 where num=#{num} 
+	</update>
+	<select id="selectRecommTot" resultType="int">
+		select recommend from feedboard where num=#{num}
+	</select>
+	<select id="selectRecomm" parameterType="hashmap"  resultType="int">
+		select NVL(sum(value),0) r from recomm where num=#{num} and id=#{id}
+	</select>
+
+ <!-- 스크랩  --> 
+
+<!-- 스크랩수 화면에 표시 -->
+	<select id="selectScrap" resultType="int">
+		select scrap from feedboard where num=#{num}
+	</select>
+	
+ <!-- 스크랩 수 올리기 -->
+	<update id="updateScrap">
+		update feedboard set scrap=scrap + 1 where num=#{num}
+	</update>
+<!-- 스크랩테이블에  정보 추가 -->
+	<insert id="insertScrapboard" parameterType="scrapboard">
+		insert into scrapboard values(#{id},#{num},sysdate)
+	</insert>
+<!-- 중복스크랩인지 확인하기 -->
+	<select id="checkScrap" resultType="int" parameterType="hashmap">
+		select NVL(count(id),0) from scrapboard where id=#{id} and num=#{num}
+	</select>
+	
+ <!-- 스크랩 한 사람 입장 : 스크랩 게시판에 목록 표시 --> 
+	<sql id="searchScrap">
+		<if test="field=='title' or field=='content' or field=='cname'">
+  			and ${field} like '%'||#{keyword}||'%'
+  		</if>
+		<if test="field=='toc'">
+  			and title like '%'||#{keyword}||'%' or content like '%'||#{keyword}||'%'
+  		</if>
+	</sql>
+	
+	<select id="countScrap" resultType="int" parameterType="hashmap">
+		select NVL(count(*),0) cnt 
+		from scrapboard s join feedboard fb on fb.num=s.num
+		where s.id=#{id}
+		<include refid="searchScrap"/>
+	</select>
+	<select id="showScrapList" resultType="fbjoinsc" parameterType="hashmap">
+		select * from
+			(
+	 			select a.*,rownum rnum from 
+	 			(
+					select fb.num num,fb.title title,fb.id writer,fb.content content,fb.thumbnail thumbnail,fb.recommend recommend,
+					fb.hits hits,fb.scrap scrap,fb.postdate postdate,fb.cname cname,s.id id,s.adddate adddate 
+					from feedboard fb join scrapboard s on fb.num=s.num
+					where s.id=#{id}
+					<include refid="searchScrap"/>
+					order by adddate desc
+				)a
+			)
+			<![CDATA[ where rnum>=#{startRow} and rnum<=#{endRow}  ]]>
+	</select>
+<!-- 스크랩 목록 삭제(해당 글 스크랩 수에는 영향x, 스크랩한 사람 스크랩게시판에서만 삭제) -->
+	<delete id="deleteScrap" parameterType="hashmap">
+		delete from scrapboard where num=#{num} and id=#{id}
+	</delete>
+	
+	
+	
+<!-- 글삭제 -->
+	<delete id="deletePostingA">
+		delete from fbcomment where num=#{num}
+	</delete>
+	<delete id="deletePostingB">
+		delete from recomm where num=#{num}
+	</delete>
+	<delete id="deletePostingC">
+		delete from fbhits where num=#{num}
+	</delete>
+	<delete id="deletePostingD">
+		delete from scrapboard where num=#{num}
+	</delete>
+	<delete id="deletePostingE">
+		delete from fbfiles where num=#{num}
+	</delete>
+	<delete id="deletePostingF">
+		delete from feedboard where num=#{num}
+	</delete>
+</mapper>

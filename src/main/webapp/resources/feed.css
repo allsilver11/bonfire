@@ -1,0 +1,58 @@
+@charset "UTF-8";
+*{margin:0px;padding:0px;}
+@font-face{
+		font-family:'나눔손글씨 사랑해 아들';
+		src:url('/bonfire/resources/font/나눔손글씨 사랑해 아들.ttf') format('truetype');
+		font-style:normal;
+		font-weight:normal;
+	}
+#wrap{
+	font-family:'Caveat','나눔손글씨 사랑해 아들', cursive;
+	font-weight : bold;
+	font-size:25px;
+	width:1200px;
+	height:1000px;
+	margin:auto;
+}
+#header{
+	width:1200px;
+	margin-top:10px;
+	height:100px;
+	margin-bottom:10px;
+/* 	background-color: yellow; */
+}
+#banner{
+	width:1200px;
+	height:300px;
+/* 	background-color: #8080ff; */
+}
+#side{
+	width:300px;
+	height:700px;
+/* 	background-color: lightblue; */
+	float:left;
+}
+#content{
+	width:900px;
+	height:600px;
+/* 	background-color: orange; */
+	float:left;
+}
+#footer{
+	width:1200px;
+	height:200px;
+/* 	background-color: pink; */
+	clear:both;
+}
+input::-webkit-input-placeholder {
+	  color: #aaaaaa;
+	  font-family:'나눔손글씨 사랑해 아들';
+	  font-size:25px;
+	  font-weight:bold;
+	}
+input:-ms-input-placeholder {
+	  color: #aaaaaa;
+	  font-family:'나눔손글씨 사랑해 아들';
+	  font-size:25px;
+	  font-weight:bold;
+	}

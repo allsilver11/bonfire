@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.bonfire.mapper.HomeMapper">
+	<select id="authorCnt" resultType="int">
+		select count(id) from
+		(
+		select b.id,b.name,b.email,b.gender,b.phone,
+		a.authority,m.nickname,m.intro,m.pfilename,m.bfilename
+		from bmembers b full outer join auth a on b.id=a.id 
+		full outer join mprofile m on m.id=b.id
+		where authority='ROLE_AUTHOR'
+		)
+	</select>
+	<select id="select" resultType="recommauthor" parameterType="int">
+		select * from
+		(
+			select b.id,b.name,b.email,b.gender,b.phone,
+			a.authority,m.nickname,m.intro,m.pfilename,m.bfilename,rownum
+			from bmembers b 
+			full outer join auth a on b.id=a.id 
+			full outer join mprofile m on m.id=b.id
+			<![CDATA[ where authority='ROLE_AUTHOR' and rownum<=#{selectAuthor}  ]]>
+			order by rownum desc
+		)
+		where rownum=1
+	</select>
+	<select id="popularArticle_hits" resultType="populararticlehits">
+		select * from (
+		select fb.num,fb.id,m.nickname,fb.title,fb.hits, fb.thumbnail 
+		from feedboard fb join mprofile m 
+		on fb.id=m.id 
+		order by hits desc)
+		<![CDATA[ where rownum>=1 and rownum<=5  ]]>
+	</select>
+	<select id="popularArticle_recomm" resultType="populararticlerecomm">
+		select * from (
+		select fb.num,fb.id,m.nickname,fb.title,fb.recommend, fb.thumbnail
+		from feedboard fb join mprofile m 
+		on fb.id=m.id 
+		order by recommend desc)
+		<![CDATA[ where rownum>=1 and rownum<=5  ]]>
+	</select>
+	<select id="popularPlace" resultType="popularplace">
+		select * from
+		(
+		select c.cname,count(fb.cname) cnameCnt
+		from cats c
+		full outer join feedboard fb 
+		on fb.cname=c.cname 
+		where c.cwhichboard='feedboard' and fb.ispost=1
+		group by c.cname
+		order by cnameCnt desc
+		)
+		<![CDATA[ where rownum>=1 and rownum<=3  ]]>
+	</select>
+	<select id="searchAuthorCnt" resultType="int" parameterType="hashmap">
+		select count(*) from
+		(
+		    select b.id,m.nickname,m.bfilename,m.pfilename,a.authority
+		    from bmembers b
+		    join auth a on b.id=a.id
+		    join mprofile m on b.id=m.id
+		    where a.authority='ROLE_AUTHOR'
+		    	and (b.id like '%'||#{keyword}||'%' or m.nickname like '%'||#{keyword}||'%')
+		)
+	</select>
+	<select id="searchAuthor" resultType="searchauthor" parameterType="hashmap">
+		select * from(
+		    select a.*,rownum rnum from
+		    (
+		        select b.id,m.nickname,m.bfilename,m.pfilename,a.authority
+		        from bmembers b
+		        join auth a on b.id=a.id
+		        join mprofile m on b.id=m.id
+		        where a.authority='ROLE_AUTHOR'
+		    		and (b.id like '%'||#{keyword}||'%' or m.nickname like '%'||#{keyword}||'%')
+		       ) a
+		    )
+		where rnum=#{slideNum}
+	</select>
+</mapper>

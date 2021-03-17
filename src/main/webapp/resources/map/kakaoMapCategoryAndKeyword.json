@@ -1,0 +1,126 @@
+{
+    "documents": [
+        {
+            "address_name": "서울 서초구 방배동 767-1",
+            "category_group_code": "FD6",
+            "category_group_name": "음식점",
+            "category_name": "음식점 > 한식",
+            "distance": "541",
+            "id": "20196029",
+            "phone": "02-591-5030",
+            "place_name": "현미밥카페 방배본점",
+            "place_url": "http:\/\/place.map.kakao.com\/20196029",
+            "road_address_name": "서울 서초구 방배중앙로27길 17",
+            "x": "126.984770083517",
+            "y": "37.4951072424217"
+        },
+        {
+            "address_name": "서울 동작구 사당동 139-22",
+            "category_group_code": "FD6",
+            "category_group_name": "음식점",
+            "category_name": "음식점 > 한식 > 주먹밥 > 봉구스밥버거",
+            "distance": "780",
+            "id": "434311874",
+            "phone": "070-4036-5414",
+            "place_name": "봉구스밥버거 이수역점",
+            "place_url": "http:\/\/place.map.kakao.com\/434311874",
+            "road_address_name": "서울 동작구 동작대로27길 31",
+            "x": "126.9802013417302",
+            "y": "37.487369614108076"
+        },
+        {
+            "address_name": "서울 동작구 사당동 161-109",
+            "category_group_code": "FD6",
+            "category_group_name": "음식점",
+            "category_name": "음식점 > 한식 > 주먹밥 > 봉구스밥버거",
+            "distance": "892",
+            "id": "274012614",
+            "phone": "02-593-5094",
+            "place_name": "봉구스밥버거 사당이수점",
+            "place_url": "http:\/\/place.map.kakao.com\/274012614",
+            "road_address_name": "서울 동작구 사당로27길 64",
+            "x": "126.976445418296",
+            "y": "37.4864742239516"
+        },
+        {
+            "address_name": "서울 동작구 사당동 147-29",
+            "category_group_code": "FD6",
+            "category_group_name": "음식점",
+            "category_name": "음식점 > 한식 > 육류,고기 > 불고기,두루치기",
+            "distance": "1109",
+            "id": "21440574",
+            "phone": "",
+            "place_name": "밥정스불고기스타",
+            "place_url": "http:\/\/place.map.kakao.com\/21440574",
+            "road_address_name": "서울 동작구 사당로 300",
+            "x": "126.980294844582",
+            "y": "37.4843809853034"
+        },
+        {
+            "address_name": "서울 동작구 사당동 1009-34",
+            "category_group_code": "FD6",
+            "category_group_name": "음식점",
+            "category_name": "음식점 > 분식",
+            "distance": "1299",
+            "id": "16095803",
+            "phone": "02-521-9501",
+            "place_name": "더밥분식",
+            "place_url": "http:\/\/place.map.kakao.com\/16095803",
+            "road_address_name": "서울 동작구 동작대로17길 7",
+            "x": "126.98081085262",
+            "y": "37.4827124022574"
+        },
+        {
+            "address_name": "서울 동작구 사당동 232-14",
+            "category_group_code": "FD6",
+            "category_group_name": "음식점",
+            "category_name": "음식점 > 한식",
+            "distance": "1392",
+            "id": "670880973",
+            "phone": "02-583-3117",
+            "place_name": "우리집밥",
+            "place_url": "http:\/\/place.map.kakao.com\/670880973",
+            "road_address_name": "서울 동작구 사당로8길 18",
+            "x": "126.96899273423",
+            "y": "37.4844434323612"
+        },
+        {
+            "address_name": "서울 서초구 방배동 922-15",
+            "category_group_code": "FD6",
+            "category_group_name": "음식점",
+            "category_name": "음식점 > 한식",
+            "distance": "1919",
+            "id": "18443903",
+            "phone": "02-522-0937",
+            "place_name": "배할머니네밥집",
+            "place_url": "http:\/\/place.map.kakao.com\/18443903",
+            "road_address_name": "서울 서초구 방배로13길 28",
+            "x": "126.99495509693237",
+            "y": "37.4828165678164"
+        },
+        {
+            "address_name": "서울 동작구 상도동 505-8",
+            "category_group_code": "FD6",
+            "category_group_name": "음식점",
+            "category_name": "음식점 > 한식 > 주먹밥 > 봉구스밥버거",
+            "distance": "1937",
+            "id": "19410746",
+            "phone": "02-6080-0953",
+            "place_name": "봉구스밥버거 숭실대점",
+            "place_url": "http:\/\/place.map.kakao.com\/19410746",
+            "road_address_name": "서울 동작구 상도로61길 35",
+            "x": "126.956838871892",
+            "y": "37.4949309504885"
+        }
+    ],
+    "meta": {
+        "is_end": true,
+        "pageable_count": 8,
+        "same_name": {
+            "keyword": "밥",
+            "region": [],
+            "selected_region": ""
+        },
+        "total_count": 8
+    }
+}

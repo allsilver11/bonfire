@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.jhta.bonfire.mapper.AuthorRegisterMapper">
+	<sql id = "search">
+		<if test = "field == 'id' or field == 'theme' or field == 'pres'">
+			where authorreg.${field} like '%'||#{keyword}||'%'
+		</if>
+		<if test = "field == 'toc'">
+			where authorreg.id like '%'||#{keyword}||'%' or authorreg.theme like '%'||#{keyword}||'%' or authorreg.pres like '%'||#{keyword}||'%'
+		</if>
+	</sql>
+	
+	<select id = "selectAll" resultType = "authorreg" parameterType = "hashmap">
+		select * from 
+		(
+		    select a.*, rownum rnum from 
+		        (
+		            select * from authorreg left join auth on authorreg.id = auth.id 
+		            <include refid = "search"/>
+		            order by authorreg.adddate desc
+		        )a
+		)
+		<![CDATA[ where rnum >= #{startRow} and rnum <= #{endRow} ]]>
+	</select>
+	
+	<select id = "selectOne" resultType = "authorreg">
+		select * from authorreg left join auth on authorreg.id = auth.id where num = #{num}
+	</select>
+	
+	<select id = "selectId" resultType = "String">
+		select authorreg.id from authorreg left join auth on authorreg.id = auth.id where authorreg.id = #{id}
+	</select>
+	
+	<insert id = "insertAuthReg" parameterType = "authorregonly">
+		insert into authorreg values (authorreg_seq.nextval, #{id}, sysdate, #{pres}, #{theme}, #{intro})
+	</insert>
+	
+	<select id = "next" parameterType = "int" resultType = "authorreg">
+		select * from
+		(
+			select * from authorreg where num > #{num} order by adddate
+		)
+		where rownum = 1
+	</select>
+	
+	<select id = "prev" parameterType = "int" resultType = "authorreg">
+		<![CDATA[
+		select * from 
+		(
+			select * from authorreg where num<#{num} order by num desc
+		)
+		where rownum=1
+		  ]]>
+	</select>
+	
+	<select id = "count" resultType = "int" parameterType = "hashmap">
+		select NVL(count(*), 0) cnt from authorreg
+	</select>
+	
+	<delete id="delete" parameterType = "hashmap">
+		delete from authorreg where num=#{num}
+	</delete>
+	
+	<update id = "approve" parameterType = "hashmap">
+		update auth set authority = 'ROLE_AUTHOR' where id = #{id}
+	</update>
+	
+	<update id = "approveOne" parameterType = "String">
+		update auth set authority = 'ROLE_AUTHOR' where id = #{id}
+	</update>
+	
+	<delete id="deleteOne" parameterType = "int">
+		delete from authorreg where num = #{num}
+	</delete>
+</mapper>

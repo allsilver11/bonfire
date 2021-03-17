@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.bonfire.mapper.TripPlanMapper">
+    <insert id="addPlan" parameterType="java.util.List">
+        <foreach collection="list" item="vo" open="insert all" close="SELECT * FROM DUAL">
+            into tripplan values(#{vo.idx}, #{vo.id}, #{vo.placeid}, #{vo.triporder})
+        </foreach>
+    </insert>
+    <select id="getIndex" resultType="int">
+        select nvl(max(idx),0) idx from tripplan
+    </select>
+    <select id="getIdxByUser" resultType="int" parameterType="string">
+        select distinct idx from tripplan where id=#{id}
+    </select>
+    <select id="getPlanIdxByIdx" resultType="tripplan">
+        select idx, id, placeid, triporder from tripplan where idx=#{idx}
+    </select>
+    <select id="getPlanMapByIdx" parameterType="int" resultType="localmap">
+        select 
+            TYPE, 
+            G_TYPE, 
+            G_COORDINATESLNG, 
+            G_COORDINATESLAT, 
+            P_ADDRESS_NAME, 
+            P_CATEGORY_GROUP_CODE, 
+            P_CATEGORY_GROUP_NAME, 
+            P_CATEGORY_NAME, 
+            P_ID, 
+            P_PHONE, 
+            P_PLACE_NAME, 
+            P_PLACE_URL, 
+            P_ROAD_ADDRESS_NAME
+        from tripplan t, localmap l 
+        where t.placeid=l.P_ID and t.idx=#{idx}
+    </select>
+    <select id="getPlanMapByUser" parameterType="string" resultType="localmap">
+        select 
+            TYPE, 
+            G_TYPE, 
+            G_COORDINATESLNG, 
+            G_COORDINATESLAT, 
+            P_ADDRESS_NAME, 
+            P_CATEGORY_GROUP_CODE, 
+            P_CATEGORY_GROUP_NAME, 
+            P_CATEGORY_NAME, 
+            P_ID, 
+            P_PHONE, 
+            P_PLACE_NAME, 
+            P_PLACE_URL, 
+            P_ROAD_ADDRESS_NAME
+        from tripplan t, localmap l 
+        where t.placeid=l.P_ID and t.id=#{id}
+    </select>
+    <delete id="removePlan" parameterType="tripplan">
+        delete tripplan where idx=#{idx} and id=#{id}
+    </delete>
+</mapper>

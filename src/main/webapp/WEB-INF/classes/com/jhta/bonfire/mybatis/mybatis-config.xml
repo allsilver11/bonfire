@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <typeAliases>
+  	<typeAlias type="com.jhta.bonfire.vo.TestVo" alias="Test"/>
+  	<typeAlias type="com.jhta.bonfire.vo.CatsVo" alias="cats"/>
+  	<typeAlias type="com.jhta.bonfire.vo.SCommDetail" alias="scommDetail"/>
+  	<typeAlias type="com.jhta.bonfire.vo.SubBoardVo" alias="subboard"/>
+  	<typeAlias type="com.jhta.bonfire.vo.SbhitsVo" alias="sbhits"/>
+  	<typeAlias type="com.jhta.bonfire.vo.SRecommVo" alias="srecomm"/>
+  	<typeAlias type="com.jhta.bonfire.vo.SCommentVo" alias="scomment"/>
+  	<typeAlias type="com.jhta.bonfire.vo.FeedboardVo" alias="feedboard"/>
+  	<typeAlias type="com.jhta.bonfire.vo.FbcommentVo" alias="fbcomment"/>
+  	<typeAlias type="com.jhta.bonfire.vo.FbhitsVo" alias="fbhits"/>
+  	<typeAlias type="com.jhta.bonfire.vo.FbfilesVo" alias="file"/>
+  	<typeAlias type="com.jhta.bonfire.vo.FbrecommVo" alias="fbrecomm"/>
+  	<typeAlias type="com.jhta.bonfire.vo.ScrapboardVo" alias="scrapboard"/>
+  	<typeAlias type="com.jhta.bonfire.vo.FeedboardJoinScrapboardVo" alias="fbjoinsc"/>
+  	<typeAlias type="com.jhta.bonfire.vo.BMembersVo" alias="bmembers"/>
+  	<typeAlias type="com.jhta.bonfire.vo.ManageMembersVo" alias="managemembers"/>
+  	<typeAlias type="com.jhta.bonfire.vo.MProfileVo" alias="mprofile"/>
+  	<typeAlias type="com.jhta.bonfire.vo.SearchAuthorVo" alias="searchauthor"/>
+  	<typeAlias type="com.jhta.bonfire.vo.RecommAuthorVo" alias="recommauthor"/>
+  	<typeAlias type="com.jhta.bonfire.vo.PopularArticleHitsVo" alias="populararticlehits"/>
+  	<typeAlias type="com.jhta.bonfire.vo.PopularArticleRecommVo" alias="populararticlerecomm"/>
+  	<typeAlias type="com.jhta.bonfire.vo.PopularPlaceVo" alias="popularplace"/>
+  	<typeAlias type="com.jhta.bonfire.vo.AuthVo" alias="auth"/>
+  	<typeAlias type="com.jhta.bonfire.vo.QnaBoardVo" alias="qnaboard"/>
+  	<typeAlias type="com.jhta.bonfire.vo.QhitsVo" alias="qhits"/>
+  	<typeAlias type="com.jhta.bonfire.vo.DfileVo" alias="dfile"/>
+  	<typeAlias type="com.jhta.bonfire.vo.DailyBoardVo" alias="dailyboard"/>
+  	<typeAlias type="com.jhta.bonfire.vo.DailyBoard_Dfile_JoinVo" alias="dailyjoin"/>
+  	<typeAlias type="com.jhta.bonfire.vo.AuthorReg_Auth_JoinVo" alias = "authorreg"/>
+	<typeAlias type="com.jhta.bonfire.vo.AuthorRegVo" alias = "authorregonly"/>
+  	<typeAlias type="com.jhta.bonfire.vo.TripPlanVo" alias="tripplan"/>
+  	<!-- <typeAlias type="com.jhta.bonfire.vo.geoJsonVo" alias="geojson"/> -->
+  	<typeAlias type="com.jhta.bonfire.vo.LocalMapVo" alias="localmap"/>
+  </typeAliases>
+  <mappers>
+  	<!-- 읽어올 Mapper파일 설정 -->
+    <mapper resource="com/jhta/bonfire/mapper/TestMapper.xml"/>
+    <mapper resource="com/jhta/bonfire/mapper/CatsMapper.xml"/>
+    <mapper resource="com/jhta/bonfire/mapper/SubBoardMapper.xml"/>
+	<mapper resource="com/jhta/bonfire/mapper/SbhitsMapper.xml"/>
+	<mapper resource="com/jhta/bonfire/mapper/SRecommMapper.xml"/>
+	<mapper resource="com/jhta/bonfire/mapper/SCommentMapper.xml"/>
+    <mapper resource="com/jhta/bonfire/mapper/FeedMapper.xml"/>
+    <mapper resource="com/jhta/bonfire/mapper/FeedboardMapper.xml"/>
+    <mapper resource="com/jhta/bonfire/mapper/BMembersMapper.xml"/>
+    <mapper resource="com/jhta/bonfire/mapper/ManageMembersMapper.xml"/>
+    <mapper resource="com/jhta/bonfire/mapper/MProfileMapper.xml"/>
+    <mapper resource="com/jhta/bonfire/mapper/HomeMapper.xml"/>
+	<mapper resource="com/jhta/bonfire/mapper/QnaBoardMapper.xml"/>
+	<mapper resource="com/jhta/bonfire/mapper/DailyBoardMapper.xml"/>
+	<mapper resource="com/jhta/bonfire/mapper/LocalMapMapper.xml"/>
+	<mapper resource="com/jhta/bonfire/mapper/TripPlanMapper.xml"/>
+	<mapper resource="com/jhta/bonfire/mapper/AuthorRegisterMapper.xml"/>
+  </mappers>
+</configuration>

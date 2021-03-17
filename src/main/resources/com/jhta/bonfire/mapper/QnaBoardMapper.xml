@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.bonfire.mapper.QnaBoardMapper">
+	<!-- 등록 -->
+	<insert id="insert" parameterType="qnaboard">
+		insert into qnaboard values(qnaboard_seq.nextval,#{id},#{title},#{content},sysdate,#{hits},null,#{cname},#{pwd},#{pin},#{secret})
+	</insert>
+
+	<select id="count" resultType="int" parameterType="hashmap">
+		select NVL(count(*),0) cnt from qnaboard
+	</select>
+	<!-- 페이지에 해당하는 글목록 구하기 -->
+	<select id="list" resultType="qnaboard" parameterType="hashmap">
+		select * from
+		(
+			select a.*,rownum rnum from
+			(
+				select * from qnaboard 
+				<include refid="search"/>
+				order by pin desc, num desc
+				) a 
+			)	
+		<![CDATA[ where rnum>=#{startRow} and rnum<=#{endRow} ]]>
+	</select>
+	
+	<!-- 다음글 -->
+	<select id="next" parameterType="int" resultType="qnaboard">
+		select * from 
+		(
+			select * from qnaboard where num>#{num} order by num asc
+		)
+		where rownum=1
+	</select>
+	<!-- 이전글 -->
+	<select id="prev" parameterType="int" resultType="qnaboard">
+		<![CDATA[
+		select * from 
+		(
+			select * from qnaboard where num<#{num} order by num desc
+		)
+		where rownum=1
+		  ]]>
+	</select>
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete from qnaboard where num=#{num} 
+	</delete>
+	<!-- 한명 조회 -->
+	<select id="select" resultType="qnaboard" parameterType="int">
+		select * from qnaboard where num=#{num}
+	</select>
+	<!-- 댓글 등록 -->
+	<update id="updatecomm" parameterType="hashmap">
+		update qnaboard set comments=#{comments}
+		where num=#{num}
+	</update>
+	<!-- 검색 -->
+	<sql id="search">
+		<if test="field=='title' or field=='content'">
+			where ${field} like '%'||#{keyword}||'%'
+		</if>
+		<if test="field=='cc'">
+			where title like '%'||#{keyword}||'%' or content like '%'||#{keyword}||'%'
+		</if>
+	</sql>
+	<!-- 조회수 -->
+	<select id="selecthit" parameterType="hashmap" resultType="hashmap">
+		select * from qhits where id=#{id} and num=#{num}
+	</select>
+	<update id="addHit" parameterType="int">
+		update qnaboard set hits=hits+1 where num=#{num}
+	</update>
+	<insert id="qhits" parameterType="qhits">
+		insert into qhits values(#{num},#{id})
+	</insert>
+	<!-- 수정 -->
+	<update id="update" parameterType="qnaboard">
+		update qnaboard set id=#{id},title=#{title},content=#{content},cname=#{cname},pwd=#{pwd}
+		where num=#{num}
+	</update>
+</mapper>

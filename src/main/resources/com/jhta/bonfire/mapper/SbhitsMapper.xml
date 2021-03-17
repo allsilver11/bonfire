@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.bonfire.mapper.SbhitsMapper">
+    <select id="count" parameterType="int">
+        select nvl(count(*),0) from sbhits where num=#{num}
+    </select>
+    <insert id="addhit" parameterType="sbhits">
+        insert into sbhits values(#{num}, #{id})
+    </insert>
+    <!-- TODO: 주기적으로 합치고 비워야 함 -->
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.bonfire.mapper.ManageMembersMapper">
+	<!-- 반복적으로 사용되는 구문에 id를 줘서 include해준다. -->
+	<sql id="search">
+		<if test="field!=null and field!=''">
+			<if test="field=='authority'">
+				and a.${field} like '%'||#{keyword}||'%'
+			</if>
+			<if test="field!='authority'">
+				and b.${field} like '%'||#{keyword}||'%'
+			</if>
+			
+		</if>
+	</sql>
+	<!-- 전체 글의 갯수 -->
+	<select id="count" resultType="int" parameterType="hashmap">
+		select NVL(count(*),0)
+		from bmembers b join auth a on b.id=a.id
+		where authority !='ROLE_ADMIN'
+		<include refid="search"/>
+	</select>
+	<!-- 페이지에 해당하는 글목록 구하기 -->
+	<select id="selectAll" resultType="managemembers" parameterType="hashmap">
+		select * from
+		(
+			select a.*,rownum rnum from
+			(
+				select b.id,b.pwd,b.name,b.email,b.birth,b.gender,b.phone,b.roadfulladdr,
+				b.enabled,b.regdate,b.addrdetail,b.zipno,a.authority 
+				from bmembers b join auth a on b.id=a.id
+				where authority !='ROLE_ADMIN'
+				<include refid="search"/>
+			) a
+		)
+		<![CDATA[ where rnum>=#{startRow} and rnum<=#{endRow} ]]>
+	</select>
+<!-- 	<select id="selectAll" resultType="managemembers"> -->
+<!-- 		select b.id,b.pwd,b.name,b.email,b.birth,b.gender,b.phone,b.roadfulladdr, -->
+<!-- 		b.enabled,b.regdate,b.addrdetail,b.zipno,a.authority  -->
+<!-- 		from bmembers b join auth a on b.id=a.id -->
+<!-- 		where authority !='ROLE_ADMIN' -->
+<!-- 	</select> -->
+	<select id="selectOne" parameterType="string" resultType="managemembers">
+		select b.id,b.pwd,b.name,b.email,b.birth,b.gender,b.phone,b.roadfulladdr,
+		b.enabled,b.regdate,b.addrdetail,b.zipno,a.authority 
+		from bmembers b join auth a on b.id=a.id
+		where authority !='ROLE_ADMIN' and b.id=#{id}
+	</select>
+</mapper>

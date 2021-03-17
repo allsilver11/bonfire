@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.bonfire.mapper.LocalMapMapper">
+    <insert id="addMap" parameterType="localmap">
+        insert into localmap values(
+            #{type, jdbcType=VARCHAR}
+            , #{g_type, jdbcType=VARCHAR}
+            , #{g_coordinateslng, jdbcType=VARCHAR}
+            , #{g_coordinatesLat, jdbcType=VARCHAR}
+            , #{p_address_name, jdbcType=VARCHAR}
+            , #{p_category_group_code, jdbcType=VARCHAR}
+            , #{p_category_group_name, jdbcType=VARCHAR}
+            , #{p_category_name, jdbcType=VARCHAR}
+            , #{p_id, jdbcType=VARCHAR}
+            , #{p_phone, jdbcType=VARCHAR}
+            , #{p_place_name, jdbcType=VARCHAR}
+            , #{p_place_url, jdbcType=VARCHAR}
+            , #{p_road_address_name, jdbcType=VARCHAR}
+        )
+    </insert>
+    <select id="getById" parameterType="string" resultType="localmap">
+        select * from localmap where propertiesid=#{p_id}
+    </select>
+</mapper>

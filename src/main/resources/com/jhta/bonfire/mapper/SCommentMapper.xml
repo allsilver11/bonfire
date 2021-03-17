@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.bonfire.mapper.SCommentMapper">
+    <!-- <resultMap id="scommDetail" type="com.jhta.bonfire.vo.SCommDetail" > -->
+    
+    <!-- <resultMap id="scommentVo" type="scomment">
+        <id property="idx" column="idx" />
+        <result column="num" property="num"/>
+        <result column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="adddate" property="adddate"/>
+    </resultMap>
+    <resultMap id="scommentValue" type="int">
+        <id property="value" column="value" />
+    </resultMap>
+    
+    <resultMap id="scommDetail" type="scommDetail">
+        <result column="value" property="value"/>
+        <association property="scommentVo" resultMap="scommentVo"></association>
+    </resultMap> 
+-->
+        <!-- <collection property="value" resultMap="int"></collection> -->
+
+
+
+
+
+    <select id="getComment" parameterType="int" resultType="scommDetail">
+select /*+ index_asc(c pk_scomment)*/ c.*, nvl(r.value, 0) value
+from scomment c, (select sum(value) value, id, num from srecomm group by id, num) r
+where r.id(+)=c.id and r.num(+)=c.num and c.num=#{num}
+order by idx asc
+    </select>
+
+    <select id="getMin" parameterType="int" resultType="Integer">
+        select /*+ index_asc(c pk_scomment)*/ idx from scomment c where rownum=1 and num=${num}
+    </select>
+    <select id="getMax" parameterType="int" resultType="Integer"> 
+        select idx from(select /*+ index_desc(c pk_scomment)*/ rownum rnum, idx from scomment c where num=#{num}) where rnum=1
+    </select>
+    
+    <insert id="addComment" parameterType="scomment">
+        insert into scomment values(#{idx}, #{num}, #{id}, #{content}, sysdate)
+    </insert>
+
+    <update id="editComment" parameterType="scomment">
+        update scomment
+        <set>
+            <if test="@com.jhta.bonfire.util.CommonUtil@isNotEmpty(content)">
+                content=#{content} 
+            </if>
+        </set>
+        where num=#{num} and id=#{id}
+    </update>
+
+
+</mapper>

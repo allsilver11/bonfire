@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.bonfire.mapper.BMembersMapper">
+	<resultMap type="com.jhta.bonfire.security.CustomUserDetail" id="userDetail">
+		<id property="id" column="id"/>
+		<result property="pwd" column="pwd"/>
+		<result property="enabled" column="enabled"/>
+		<collection property="authoList" ofType="com.jhta.bonfire.vo.AuthVo">
+			<result property="id" column="id"/>
+			<result property="authority" column="authority"/>
+		</collection>
+	</resultMap>
+	<select id="getAuths" parameterType="string" resultMap="userDetail">
+		select * from auth a,bmembers b
+		where a.id=b.id and b.id=#{id}
+	</select>
+	<select id="userInfo" parameterType="string" resultType="bmembers">
+		select * from bmembers where id=#{id}
+	</select>
+	<select id="selectAll" resultType="bmembers">
+		select * from bmembers
+	</select>
+	<select id = "getRole" parameterType = "string" resultType = "string">
+		select authority from auth where id = #{id}
+	</select>
+	
+	<insert id="b_insert" parameterType="bmembers">
+		insert into bmembers values(#{id},#{pwd},#{name},#{email},#{birth},#{gender},#{phone},#{roadfulladdr},1,sysdate,#{addrdetail},#{zipno})
+	</insert>
+	<insert id="a_insert" parameterType="auth">
+		insert into auth values(#{id},#{authority})
+	</insert>
+	
+	<update id="update" parameterType="bmembers">
+		update bmembers set name=#{name},email=#{email},birth=#{birth},gender=#{gender},phone=#{phone},
+		zipno=#{zipno},roadfulladdr=#{roadfulladdr},addrdetail=#{addrdetail}
+		where id=#{id}
+	</update>
+	<update id="updatePwd" parameterType="hashmap">
+		update bmembers set pwd=#{pwd}
+		where id=#{id}
+	</update>
+	
+	
+	<delete id="b_delete" parameterType="String">
+		delete from bmembers where id=#{id}
+	</delete>
+	<delete id="a_delete" parameterType="String">
+		delete from auth where id=#{id}
+	</delete>
+	
+	
+	<select id="pwdMatch" parameterType="string" resultType="string">
+		select pwd from bmembers where id=#{id}
+	</select>
+	
+	<select id="idCheck" parameterType="String" resultType="hashmap">
+		select * from bmembers where id=#{id}
+	</select>
+	<select id="feedCheck" parameterType="String" resultType="hashmap">
+		select * from bmembers where id=#{feedId}
+	</select>
+	<select id="isMember" parameterType="hashmap" resultType="hashmap">
+		select * from bmembers where id=#{id} and pwd=#{pwd}
+	</select>
+	<select id="searchId" parameterType="hashmap" resultType="String">
+		select id from bmembers where name=#{name} and email=#{email}
+	</select>
+	<select id="searchPwd" parameterType="hashmap" resultType="String">
+		select pwd from bmembers where id=#{id} and name=#{name} and email=#{email}
+	</select>
+</mapper>

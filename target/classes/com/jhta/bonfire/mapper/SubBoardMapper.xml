@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.bonfire.mapper.SubBoardMapper">
+    
+    <sql id="search">
+        <where>
+            <if test='@com.jhta.bonfire.util.CommonUtil@isNotEmpty(cname)'>
+                cname=#{cname}
+            </if>
+            <if test="@com.jhta.bonfire.util.CommonUtil@isNotEmpty(fields, keyword)">
+                <foreach collection="fields" index="i" item="field">
+                    <!-- and contains(${field}, '%'||#{keyword}||'%')>0 -->
+                    and ${field} like ('%'||#{keyword}||'%')
+                </foreach>
+            </if>
+        </where>
+    </sql>
+    <sql id="searchcount"></sql>
+    
+<!-- start:count -->
+    <select id="count" parameterType="hashmap" resultType="int">
+select nvl(count(num),0) cnt 
+from subscriberboard
+<include refid="search" />
+    </select>
+<!-- end:count -->
+<!-- start:list -->
+    <select id="getList" resultType="subboard" parameterType="hashmap">
+select b.rnum, b.num, b.id, b.title, b.adddate, b.recommend, b.hits, b.cname
+from (
+select rownum rnum, a.num, a.id, a.title, a.adddate, a.recommend, a.hits, a.cname
+from (
+select num, id, title, adddate, recommend, hits, cname
+from SUBSCRIBERBOARD
+<include refid="search" />
+order by num desc
+<![CDATA[
+) a where rownum<=#{endRow}) b where rnum>=#{startRow}
+]]> 
+    </select>
+<!-- end:list -->
+<!-- start:getdata -->
+    <select id="getData" parameterType="int" resultType="subboard">
+select num, id, title, content, adddate, recommend, hits, cname 
+from subscriberboard
+where num=#{num}
+    </select>
+<!-- end:getdata -->
+
+    <update id="addHit" parameterType="sbhits">
+        update SUBSCRIBERBOARD set hits=hits+1 where num=#{num}
+    </update>
+    <update id="recomm" parameterType="srecomm">
+        update SUBSCRIBERBOARD set recommend=recommend+#{value} where num=#{num}
+    </update>
+
+    <insert id="write" parameterType="subboard">
+        insert into SUBSCRIBERBOARD values(subscriberboard_seq.nextval, #{id}, #{title}, #{content}, sysdate, 0, 0, #{cname})
+    </insert>
+    
+</mapper>
